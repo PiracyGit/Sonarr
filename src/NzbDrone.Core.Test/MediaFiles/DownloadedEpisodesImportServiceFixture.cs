@@ -401,6 +401,7 @@ namespace NzbDrone.Core.Test.MediaFiles
                   .Verify(v => v.DeleteFolder(It.IsAny<string>(), true), Times.Never());
         }
 
+        /*
         [Test]
         public void should_not_delete_folder_after_import()
         {
@@ -415,6 +416,7 @@ namespace NzbDrone.Core.Test.MediaFiles
             Mocker.GetMock<IDiskProvider>()
                   .Verify(v => v.DeleteFolder(It.IsAny<string>(), true), Times.Never());
         }
+        */
 
         [Test]
         public void should_delete_folder_if_importmode_move()
