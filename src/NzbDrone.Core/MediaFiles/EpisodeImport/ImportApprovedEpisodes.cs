@@ -93,20 +93,7 @@ namespace NzbDrone.Core.MediaFiles.EpisodeImport
                     episodeFile.ReleaseGroup = localEpisode.ReleaseGroup;
                     episodeFile.Languages = localEpisode.Languages;
 
-                    bool copyOnly;
-                    switch (importMode)
-                    {
-                        default:
-                        case ImportMode.Auto:
-                            copyOnly = downloadClientItem != null && !downloadClientItem.CanMoveFiles;
-                            break;
-                        case ImportMode.Move:
-                            copyOnly = false;
-                            break;
-                        case ImportMode.Copy:
-                            copyOnly = true;
-                            break;
-                    }
+                    bool copyOnly = false;
 
                     if (newDownload)
                     {
