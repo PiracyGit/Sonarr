@@ -93,7 +93,7 @@ namespace NzbDrone.Core.MediaFiles.EpisodeImport
                     episodeFile.ReleaseGroup = localEpisode.ReleaseGroup;
                     episodeFile.Languages = localEpisode.Languages;
 
-                    bool copyOnly = false;
+                    var copyOnly = false;
 
                     if (newDownload)
                     {
