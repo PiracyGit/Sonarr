@@ -19,8 +19,23 @@ on:
         description: 'Sonarr version'
         type: string
         required: true
-    secrets:
-      SERVICES_API_KEY:
+  workflow_dispatch:
+    inputs:
+      framework: 
+        description: '.net framework'
+        type: string
+        required: true
+      branch:
+        description: 'Git branch used for this build'
+        type: string
+        required: true
+      major_version:
+        description: 'Sonarr major version'
+        type: string
+        required: true
+      version:
+        description: 'Sonarr version'
+        type: string
         required: true
 
 jobs:
