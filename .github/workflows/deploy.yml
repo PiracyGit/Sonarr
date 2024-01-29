@@ -42,16 +42,16 @@ jobs:
   package:
     strategy:
       matrix:
-        platform: [freebsd, linux, macos, windows]
+        platform: [linux] # [freebsd, linux, macos, windows]
         include:
-          - platform: freebsd
-            os: ubuntu-latest
+          # - platform: freebsd
+          #   os: ubuntu-latest
           - platform: linux
             os: ubuntu-latest
-          - platform: macos
-            os: ubuntu-latest
-          - platform: windows
-            os: windows-latest
+          # - platform: macos
+          #   os: ubuntu-latest
+          # - platform: windows
+          #   os: windows-latest
 
     runs-on: ${{ matrix.os }}
     steps:
