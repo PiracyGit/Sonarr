@@ -117,6 +117,8 @@ jobs:
           registry: ghcr.io
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
+          driver-opts: |
+            image=moby/buildkit:v0.10.6
 
       - name: Date
         id: date
@@ -135,7 +137,5 @@ jobs:
             VERSION=2.1
             SONARR_VERSION=${{ inputs.version }}
             BUILD_DATE=${{ steps.date.outputs.BUILD_DATE }}
-          driver-opts:
-            image=moby/buildkit:v0.10.6
           cache-from: type=gha
           cache-to: type=gha,mode=max
