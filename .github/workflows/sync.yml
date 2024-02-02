@@ -15,7 +15,5 @@ jobs:
       - uses: tgymnich/fork-sync@v1.8
         with:
           token: ${{ secrets.GITHUB_TOKEN  }}
-          owner: ${{ github.repository_owner }}
-          repo: ${{ github.repository }}
           base: develop
           head: develop
