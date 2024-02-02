@@ -6,16 +6,16 @@ on:
   workflow_dispatch:
 
 jobs:
-  repo-sync:
+  sync:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
     steps:
-    - uses: actions/checkout@v3
-      with:
-        persist-credentials: false
-    - name: repo-sync
-      uses: repo-sync/github-sync@v2
-      with:
-        source_repo: "Sonarr/Sonarr"
-        source_branch: "develop"
-        destination_branch: "develop"
-        github_token: ${{ secrets.GITHUB_TOKEN }}
+      - uses: tgymnich/fork-sync@v1.8
+        with:
+          token: ${{ secrets.GITHUB_TOKEN  }}
+          owner: ${{ github.repository_owner }}
+          repo: ${{ github.repository }}
+          base: develop
+          head: develop
