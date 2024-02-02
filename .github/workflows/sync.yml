@@ -18,3 +18,4 @@ jobs:
           base: develop
           head: develop
           auto_approve: true
+          retries: 0
