@@ -2,19 +2,20 @@ name: Sync Fork
 
 on:
   schedule:
-    - cron: '0 0 * * *'
+  - cron:  "*0 0 * * *"
   workflow_dispatch:
 
 jobs:
-  sync:
-
+  repo-sync:
     runs-on: ubuntu-latest
-
     steps:
-      - uses: tgymnich/fork-sync@v1.8
-        with:
-          token: ${{ secrets.PERSONAL_TOKEN }}
-          owner: Sonarr
-          repo: Sonarr
-          base: develop
-          head: develop
+    - uses: actions/checkout@v3
+      with:
+        persist-credentials: false
+    - name: repo-sync
+      uses: repo-sync/github-sync@v2
+      with:
+        source_repo: "Sonarr"
+        source_branch: "develop"
+        destination_branch: "develop"
+        github_token: ${{ secrets.GITHUB_TOKEN }}
