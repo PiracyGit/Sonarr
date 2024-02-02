@@ -15,7 +15,7 @@ jobs:
     - name: repo-sync
       uses: repo-sync/github-sync@v2
       with:
-        source_repo: "Sonarr"
+        source_repo: "Sonarr/Sonarr"
         source_branch: "develop"
         destination_branch: "develop"
         github_token: ${{ secrets.GITHUB_TOKEN }}
