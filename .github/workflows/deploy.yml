@@ -56,7 +56,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     steps:
     - name: Check out
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
 
     - name: Package
       uses: ./.github/actions/package
@@ -75,7 +75,7 @@ jobs:
       contents: write
     steps:
     - name: Check out
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
 
     - name: Download release artifacts
       uses: actions/download-artifact@v4

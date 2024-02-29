@@ -5,14 +5,14 @@ on:
     branches:
       - develop
       - main
-    paths:
-      - '!src/Sonarr.Api.*/openapi.json'
+    paths-ignore:
+      - 'src/Sonarr.Api.*/openapi.json'
   pull_request:
     branches:
       - develop
-    paths:
-      - '!src/NzbDrone.Core/Localization/Core/**'
-      - '!src/Sonarr.Api.*/openapi.json'
+    paths-ignore:
+      - 'src/NzbDrone.Core/Localization/Core/**'
+      - 'src/Sonarr.Api.*/openapi.json'
   workflow_dispatch:
 
 concurrency:
@@ -21,9 +21,9 @@ concurrency:
 
 env:
   FRAMEWORK: net6.0
-  BRANCH: ${{ github.head_ref || github.ref_name }}
+  RAW_BRANCH_NAME: ${{ github.head_ref || github.ref_name }}
   SONARR_MAJOR_VERSION: 4
-  VERSION: 4.0.1
+  VERSION: 4.0.2
 
 jobs:
   backend:
@@ -34,10 +34,10 @@ jobs:
       version: ${{ steps.variables.outputs.version }}
     steps:
     - name: Check out
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
 
     - name: Setup .NET
-      uses: actions/setup-dotnet@v3
+      uses: actions/setup-dotnet@v4
 
     - name: Setup Environment Variables
       id: variables
@@ -49,6 +49,8 @@ jobs:
 
         echo "SDK_PATH=${{ env.DOTNET_ROOT }}/sdk/${DOTNET_VERSION}" >> "$GITHUB_ENV"
         echo "SONARR_VERSION=$SONARR_VERSION" >> "$GITHUB_ENV"
+        echo "BRANCH=${RAW_BRANCH_NAME/\//-}" >> "$GITHUB_ENV"
+
         echo "framework=${{ env.FRAMEWORK }}" >> "$GITHUB_OUTPUT"
         echo "major_version=${{ env.SONARR_MAJOR_VERSION }}" >> "$GITHUB_OUTPUT"
         echo "version=$SONARR_VERSION" >> "$GITHUB_OUTPUT"
@@ -108,7 +110,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Check out
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
 
     - name: Volta
       uses: volta-cli/action@v4
@@ -150,7 +152,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     steps:
     - name: Check out
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
 
     - name: Test
       uses: ./.github/actions/test
@@ -165,7 +167,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Check out
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
 
     - name: Test
       uses: ./.github/actions/test
@@ -179,6 +181,7 @@ jobs:
   integration_test:
     needs: backend
     strategy:
+      fail-fast: false
       matrix:
         os: [ubuntu-latest] # [ubuntu-latest, macos-latest, windows-latest]
         include:
@@ -200,7 +203,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     steps:
     - name: Check out
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
 
     - name: Test
       uses: ./.github/actions/test
