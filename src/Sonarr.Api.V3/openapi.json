@@ -5143,6 +5143,23 @@
             }
           }
         }
+      },
+      "head": {
+        "tags": [
+          "Ping"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PingResource"
+                }
+              }
+            }
+          }
+        }
       }
     },
     "/api/v3/qualitydefinition/{id}": {
@@ -8275,9 +8292,7 @@
             "nullable": true
           },
           "releaseType": {
-            "type": "integer",
-            "format": "int32",
-            "nullable": true
+            "$ref": "#/components/schemas/ReleaseType"
           },
           "mediaInfo": {
             "$ref": "#/components/schemas/MediaInfoResource"
@@ -10215,6 +10230,9 @@
             "type": "boolean"
           },
           "isSplitEpisode": {
+            "type": "boolean"
+          },
+          "isMiniSeries": {
             "type": "boolean"
           },
           "special": {
