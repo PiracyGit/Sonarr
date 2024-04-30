@@ -84,14 +84,14 @@ jobs:
         pattern: release_*
         merge-multiple: true
 
-    - name: Get Previous Release
-      id: previous-release
-      uses: cardinalby/git-get-release-action@v1
-      env:
-        GITHUB_TOKEN: ${{ github.token }}
-      with:
-        latest: true
-        prerelease: ${{ inputs.branch != 'main' }}
+    # - name: Get Previous Release
+    #   id: previous-release
+    #   uses: cardinalby/git-get-release-action@v1
+    #   env:
+    #     GITHUB_TOKEN: ${{ github.token }}
+    #   with:
+    #     latest: true
+    #     prerelease: ${{ inputs.branch != 'main' }}
 
     - name: Generate Release Notes
       id: generate-release-notes
@@ -105,7 +105,6 @@ jobs:
             repo: context.repo.repo,
             tag_name: 'v${{ inputs.version }}',
             target_commitish: '${{ github.sha }}',
-            previous_tag_name: '${{ steps.previous-release.outputs.tag_name }}',
           })
           return data.body
 
