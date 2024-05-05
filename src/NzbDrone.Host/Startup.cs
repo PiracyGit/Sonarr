@@ -56,7 +56,7 @@ namespace NzbDrone.Host
 
             services.Configure<ForwardedHeadersOptions>(options =>
             {
-                options.ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
+                options.ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto | ForwardedHeaders.XForwardedHost;
                 options.KnownNetworks.Clear();
                 options.KnownProxies.Clear();
             });
@@ -220,9 +220,12 @@ namespace NzbDrone.Host
 
             // instantiate the databases to initialize/migrate them
             _ = mainDatabaseFactory.Value;
-            _ = logDatabaseFactory.Value;
 
-            dbTarget.Register();
+            if (configFileProvider.LogDbEnabled)
+            {
+                _ = logDatabaseFactory.Value;
+                dbTarget.Register();
+            }
 
             if (OsInfo.IsNotWindows)
             {
