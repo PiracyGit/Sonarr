@@ -126,6 +126,10 @@ namespace NzbDrone.Core.Parser
                 new Regex(@"^\[(?<subgroup>.+?)\][-_. ]?(?<title>.+?)(?:(?<!\b[0]\d+))(?<absoluteepisode>\d{2,3}(\.\d{1,2})?(?!\d+|[-]))[. ]-[. ](?<absoluteepisode>\d{2,3}(\.\d{1,2})?(?!\d+|[-]))(?:[-_. ]+(?<special>special|ova|ovd))?.*?(?<hash>[(\[]\w{8}[)\]])?(?:$|\.mkv)",
                     RegexOptions.IgnoreCase | RegexOptions.Compiled),
 
+                // Anime - [SubGroup] Title with trailing number S## (Full season)
+                new Regex(@"^\[(?<subgroup>.+?)\][-_. ]?(?<title>.+?)[-_. ]+(?:S(?<season>(?<!\d+)(?:\d{1,2}|\d{4})(?!\d+))).+?(?:$|\.mkv)",
+                    RegexOptions.IgnoreCase | RegexOptions.Compiled),
+
                 // Anime - [SubGroup] Title Absolute Episode Number
                 new Regex(@"^\[(?<subgroup>.+?)\][-_. ]?(?<title>.+?)[-_. ]+\(?(?:[-_. ]?#?(?<absoluteepisode>\d{2,3}(\.\d{1,2})?(?!\d+|-[a-z]+)))+\)?(?:[-_. ]+(?<special>special|ova|ovd))?.*?(?<hash>[(\[]\w{8}[)\]])?(?:$|\.mkv)",
                           RegexOptions.IgnoreCase | RegexOptions.Compiled),
@@ -510,7 +514,7 @@ namespace NzbDrone.Core.Parser
 
         // Valid TLDs http://data.iana.org/TLD/tlds-alpha-by-domain.txt
 
-        private static readonly RegexReplace WebsitePrefixRegex = new RegexReplace(@"^(?:\[\s*)?(?:www\.)?[-a-z0-9-]{1,256}\.(?<!Naruto-Kun\.)(?:[a-z]{2,6}\.[a-z]{2,6}|xn--[a-z0-9-]{4,}|[a-z]{2,})\b(?:\s*\]|[ -]{2,})[ -]*",
+        private static readonly RegexReplace WebsitePrefixRegex = new RegexReplace(@"^(?:(?:\[|\()\s*)?(?:www\.)?[-a-z0-9-]{1,256}\.(?<!Naruto-Kun\.)(?:[a-z]{2,6}\.[a-z]{2,6}|xn--[a-z0-9-]{4,}|[a-z]{2,})\b(?:\s*(?:\]|\))|[ -]{2,})[ -]*",
                                                                 string.Empty,
                                                                 RegexOptions.IgnoreCase | RegexOptions.Compiled);
 
@@ -1205,7 +1209,7 @@ namespace NzbDrone.Core.Parser
                 }
             }
 
-            if (lastSeasonEpisodeStringIndex != releaseTitle.Length)
+            if (lastSeasonEpisodeStringIndex < releaseTitle.Length)
             {
                 result.ReleaseTokens = releaseTitle.Substring(lastSeasonEpisodeStringIndex);
             }
@@ -1285,7 +1289,7 @@ namespace NzbDrone.Core.Parser
 
         private static int ParseNumber(string value)
         {
-            var normalized = value.Normalize(NormalizationForm.FormKC);
+            var normalized = ConvertToNumerals(value.Normalize(NormalizationForm.FormKC));
 
             if (int.TryParse(normalized, out var number))
             {
@@ -1304,7 +1308,7 @@ namespace NzbDrone.Core.Parser
 
         private static decimal ParseDecimal(string value)
         {
-            var normalized = value.Normalize(NormalizationForm.FormKC);
+            var normalized = ConvertToNumerals(value.Normalize(NormalizationForm.FormKC));
 
             if (decimal.TryParse(normalized, NumberStyles.Float, CultureInfo.InvariantCulture, out var number))
             {
@@ -1312,6 +1316,25 @@ namespace NzbDrone.Core.Parser
             }
 
             throw new FormatException(string.Format("{0} isn't a number", value));
+        }
+
+        private static string ConvertToNumerals(string input)
+        {
+            var result = new StringBuilder(input.Length);
+
+            foreach (var c in input.ToCharArray())
+            {
+                if (char.IsNumber(c))
+                {
+                    result.Append(char.GetNumericValue(c));
+                }
+                else
+                {
+                    result.Append(c);
+                }
+            }
+
+            return result.ToString();
         }
     }
 }
