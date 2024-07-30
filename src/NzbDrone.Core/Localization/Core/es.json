@@ -276,7 +276,6 @@
     "MonitorSeries": "Monitorizar Series",
     "NoHistory": "Sin historial",
     "NoHistoryFound": "No se encontró historial",
-    "NoHistoryBlocklist": "Sin historial de la lista de bloqueos",
     "QueueIsEmpty": "La cola está vacía",
     "Quality": "Calidad",
     "RefreshAndScanTooltip": "Actualizar información y escanear disco",
@@ -2093,5 +2092,6 @@
     "InstallMajorVersionUpdate": "Instalar actualización",
     "CountVotes": "{votes} votos",
     "InstallMajorVersionUpdateMessage": "Esta actualización instalará una nueva versión principal y podría no ser compatible con tu sistema. ¿Estás seguro que quieres instalar esta actualización?",
-    "InstallMajorVersionUpdateMessageLink": "Por favor revisa [{domain}]({url}) para más información."
+    "InstallMajorVersionUpdateMessageLink": "Por favor revisa [{domain}]({url}) para más información.",
+    "NextAiringDate": "Siguiente emisión: {date}"
 }
