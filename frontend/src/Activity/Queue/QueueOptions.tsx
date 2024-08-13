@@ -1,11 +1,11 @@
-import React, { Fragment, useCallback } from 'react';
+import React, { useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import AppState from 'App/State/AppState';
 import FormGroup from 'Components/Form/FormGroup';
 import FormInputGroup from 'Components/Form/FormInputGroup';
 import FormLabel from 'Components/Form/FormLabel';
 import { inputTypes } from 'Helpers/Props';
-import { setQueueOption } from 'Store/Actions/queueActions';
+import { gotoQueuePage, setQueueOption } from 'Store/Actions/queueActions';
 import { CheckInputChanged } from 'typings/inputs';
 import translate from 'Utilities/String/translate';
 
@@ -22,24 +22,26 @@ function QueueOptions() {
           [name]: value,
         })
       );
+
+      if (name === 'includeUnknownSeriesItems') {
+        dispatch(gotoQueuePage({ page: 1 }));
+      }
     },
     [dispatch]
   );
 
   return (
-    <Fragment>
-      <FormGroup>
-        <FormLabel>{translate('ShowUnknownSeriesItems')}</FormLabel>
+    <FormGroup>
+      <FormLabel>{translate('ShowUnknownSeriesItems')}</FormLabel>
 
-        <FormInputGroup
-          type={inputTypes.CHECK}
-          name="includeUnknownSeriesItems"
-          value={includeUnknownSeriesItems}
-          helpText={translate('ShowUnknownSeriesItemsHelpText')}
-          onChange={handleOptionChange}
-        />
-      </FormGroup>
-    </Fragment>
+      <FormInputGroup
+        type={inputTypes.CHECK}
+        name="includeUnknownSeriesItems"
+        value={includeUnknownSeriesItems}
+        helpText={translate('ShowUnknownSeriesItemsHelpText')}
+        onChange={handleOptionChange}
+      />
+    </FormGroup>
   );
 }
 
