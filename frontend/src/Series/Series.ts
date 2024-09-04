@@ -19,8 +19,10 @@ export type SeriesStatus = 'continuing' | 'ended' | 'upcoming' | 'deleted';
 
 export type MonitorNewItems = 'all' | 'none';
 
+export type CoverType = 'poster' | 'banner' | 'fanart' | 'season';
+
 export interface Image {
-  coverType: string;
+  coverType: CoverType;
   url: string;
   remoteUrl: string;
 }
@@ -71,7 +73,7 @@ interface Series extends ModelBase {
   firstAired: string;
   genres: string[];
   images: Image[];
-  imdbId: string;
+  imdbId?: string;
   monitored: boolean;
   monitorNewItems: MonitorNewItems;
   network: string;
