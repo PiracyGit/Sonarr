@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:1
 
-FROM ghcr.io/linuxserver/baseimage-alpine:3.19
+FROM ghcr.io/linuxserver/baseimage-alpine:3.20
 
 # set version label
 ARG BUILD_DATE
@@ -10,28 +10,32 @@ LABEL build_version="Linuxserver.io version:- ${VERSION} Build-date:- ${BUILD_DA
 LABEL maintainer="eliasbenb"
 
 # set environment variables
-ENV XDG_CONFIG_HOME="/config/xdg"
-ENV SONARR_BRANCH="develop"
+ENV XDG_CONFIG_HOME="/config/xdg" \
+  SONARR_CHANNEL="v4-stable" \
+  SONARR_BRANCH="develop" \
+  COMPlus_EnableDiagnostics=0 \
+  TMPDIR=/run/sonarr-temp
 
 RUN \
   echo "**** install packages ****" && \
   apk add --no-cache \
-    icu-libs \
-    sqlite-libs \
-    xmlstarlet && \
+  icu-libs \
+  sqlite-libs \
+  xmlstarlet && \
   echo "**** install sonarr ****" && \
   mkdir -p /app/sonarr/bin && \
   curl -o \
-    /tmp/sonarr.tar.gz -L \
-    "https://github.com/PiracyGit/Sonarr/releases/download/v${SONARR_VERSION}/Sonarr.${SONARR_BRANCH}.${SONARR_VERSION}.linux-musl-x64.tar.gz" && \
+  /tmp/sonarr.tar.gz -L \
+  "https://github.com/PiracyGit/Sonarr/releases/download/v${SONARR_VERSION}/Sonarr.${SONARR_BRANCH}.${SONARR_VERSION}.linux-musl-x64.tar.gz" && \
   tar xzf \
-    /tmp/sonarr.tar.gz -C \
-    /app/sonarr/bin --strip-components=1 && \
+  /tmp/sonarr.tar.gz -C \
+  /app/sonarr/bin --strip-components=1 && \
   echo -e "UpdateMethod=docker\nBranch=${SONARR_BRANCH}\nPackageVersion=${VERSION:-LocalBuild}\nPackageAuthor=[linuxserver.io](https://linuxserver.io)" > /app/sonarr/package_info && \
+  printf "Linuxserver.io version: ${VERSION}\nBuild-date: ${BUILD_DATE}" > /build_version && \
   echo "**** cleanup ****" && \
   rm -rf \
-    /app/sonarr/bin/Sonarr.Update \
-    /tmp/*
+  /app/sonarr/bin/Sonarr.Update \
+  /tmp/*
 
 # add local files
 COPY root/ /
