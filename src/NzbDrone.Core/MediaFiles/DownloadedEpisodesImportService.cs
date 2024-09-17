@@ -108,6 +108,8 @@ namespace NzbDrone.Core.MediaFiles
 
         public bool ShouldDeleteFolder(DirectoryInfo directoryInfo, Series series)
         {
+            return false;
+            /*
             try
             {
                 var videoFiles = _diskScanService.GetVideoFiles(directoryInfo.FullName);
@@ -151,6 +153,7 @@ namespace NzbDrone.Core.MediaFiles
                 _logger.Debug(e, "Unable to determine whether folder {0} should be removed", directoryInfo.FullName);
                 return false;
             }
+            */
         }
 
         private List<ImportResult> ProcessFolder(DirectoryInfo directoryInfo, ImportMode importMode, DownloadClientItem downloadClientItem)
