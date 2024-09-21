@@ -268,7 +268,7 @@ namespace NzbDrone.Core.Download.Clients.QBittorrent
                     case "uploading": // torrent is being seeded and data is being transferred
                     case "stalledUP": // torrent is being seeded, but no connection were made
                     case "queuedUP": // queuing is enabled and torrent is queued for upload
-                    case "forcedUP": // torrent has finished downloading and is being forcibly seeded
+                    // case "forcedUP": // torrent has finished downloading and is being forcibly seeded
                         item.Status = DownloadItemStatus.Completed;
                         item.RemainingTime = TimeSpan.Zero; // qBittorrent sends eta=8640000 for completed torrents
                         break;
@@ -298,6 +298,7 @@ namespace NzbDrone.Core.Download.Clients.QBittorrent
 
                         break;
 
+                    case "forcedUP": // special state for my post-completion script
                     case "forcedDL": // torrent is being downloaded, and was forced started
                     case "moving": // torrent is being moved from a folder
                     case "downloading": // torrent is being downloaded and data is being transferred
