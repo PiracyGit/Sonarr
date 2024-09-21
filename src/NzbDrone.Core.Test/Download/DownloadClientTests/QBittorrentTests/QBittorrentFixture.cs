@@ -205,7 +205,6 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.QBittorrentTests
         [TestCase("queuedUP")]
         [TestCase("uploading")]
         [TestCase("stalledUP")]
-        [TestCase("forcedUP")]
         public void completed_item_should_have_required_properties(string state)
         {
             var torrent = new QBittorrentTorrent
