@@ -15,6 +15,7 @@ using NzbDrone.Core.Parser;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Profiles.Delay;
 using NzbDrone.Core.Qualities;
+using NzbDrone.Core.Queue;
 using NzbDrone.Core.Tv;
 using NzbDrone.Core.Tv.Events;
 
@@ -274,10 +275,7 @@ namespace NzbDrone.Core.Download.Pending
             {
                 foreach (var series in knownRemoteEpisodes.Values.Select(v => v.Series))
                 {
-                    if (!seriesMap.ContainsKey(series.Id))
-                    {
-                        seriesMap[series.Id] = series;
-                    }
+                    seriesMap.TryAdd(series.Id, series);
                 }
             }
 
@@ -293,7 +291,7 @@ namespace NzbDrone.Core.Download.Pending
                 // Just in case the series was removed, but wasn't cleaned up yet (housekeeper will clean it up)
                 if (series == null)
                 {
-                    return null;
+                    continue;
                 }
 
                 // Languages will be empty if added before upgrading to v4, reparsing the languages if they're empty will set it to Unknown or better.
@@ -392,7 +390,7 @@ namespace NzbDrone.Core.Download.Pending
                 Timeleft = timeleft,
                 EstimatedCompletionTime = ect,
                 Added = pendingRelease.Added,
-                Status = pendingRelease.Reason.ToString(),
+                Status = Enum.TryParse(pendingRelease.Reason.ToString(), out QueueStatus outValue) ? outValue : QueueStatus.Unknown,
                 Protocol = pendingRelease.RemoteEpisode.Release.DownloadProtocol,
                 Indexer = pendingRelease.RemoteEpisode.Release.Indexer,
                 DownloadClient = downloadClientName

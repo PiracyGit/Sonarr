@@ -10,6 +10,7 @@ import CaptchaInput from './CaptchaInput';
 import CheckInput from './CheckInput';
 import { FormInputButtonProps } from './FormInputButton';
 import FormInputHelpText from './FormInputHelpText';
+import KeyValueListInput from './KeyValueListInput';
 import NumberInput from './NumberInput';
 import OAuthInput from './OAuthInput';
 import PasswordInput from './PasswordInput';
@@ -18,6 +19,7 @@ import DownloadClientSelectInput from './Select/DownloadClientSelectInput';
 import EnhancedSelectInput from './Select/EnhancedSelectInput';
 import IndexerFlagsSelectInput from './Select/IndexerFlagsSelectInput';
 import IndexerSelectInput from './Select/IndexerSelectInput';
+import LanguageSelectInput from './Select/LanguageSelectInput';
 import MonitorEpisodesSelectInput from './Select/MonitorEpisodesSelectInput';
 import MonitorNewItemsSelectInput from './Select/MonitorNewItemsSelectInput';
 import ProviderDataSelectInput from './Select/ProviderOptionSelectInput';
@@ -46,6 +48,12 @@ function getComponent(type: InputType) {
 
     case inputTypes.DEVICE:
       return DeviceInput;
+
+    case inputTypes.KEY_VALUE_LIST:
+      return KeyValueListInput;
+
+    case inputTypes.LANGUAGE_SELECT:
+      return LanguageSelectInput;
 
     case inputTypes.MONITOR_EPISODES_SELECT:
       return MonitorEpisodesSelectInput;
